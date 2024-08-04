@@ -1,0 +1,12 @@
+FROM mysql:latest
+
+# ENV MYSQL_DATABASE_HOST=todolist-mysql-container
+ENV MYSQL_ROOT_PASSWORD=root_password
+ENV MYSQL_USER=errick
+ENV MYSQL_PASSWORD=new_password
+ENV MYSQL_DATABASE=todolist_errick_db
+# ENV MYSQL_DATABASE_PORT=3306
+
+
+EXPOSE 3306
+

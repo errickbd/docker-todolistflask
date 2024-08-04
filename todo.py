@@ -1,16 +1,23 @@
 from flask import Flask, jsonify, abort, request, make_response
 from flaskext.mysql import MySQL
 from flask_cors import CORS
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env file
+load_dotenv()
+
 
 app = Flask(__name__)
 CORS(app)
 
-# Configuring MySQL database
-app.config['MYSQL_DATABASE_HOST'] = 'todo-database-server'
-app.config['MYSQL_DATABASE_USER'] = 'chandra'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'Chandra@123'
-app.config['MYSQL_DATABASE_DB'] = 'todo_db'
-app.config['MYSQL_DATABASE_PORT'] = 3306
+# Configuring MySQL database using environment variables
+app.config['MYSQL_DATABASE_HOST'] = os.getenv('MYSQL_DATABASE_HOST')
+app.config['MYSQL_DATABASE_USER'] = os.getenv('MYSQL_DATABASE_USER')
+app.config['MYSQL_DATABASE_PASSWORD'] = os.getenv('MYSQL_DATABASE_PASSWORD')
+app.config['MYSQL_DATABASE_DB'] = os.getenv('MYSQL_DATABASE_DB')
+app.config['MYSQL_DATABASE_PORT'] = int(os.getenv('MYSQL_DATABASE_PORT'))
+
 mysql = MySQL()
 mysql.init_app(app)
 connection = mysql.connect()
@@ -21,10 +28,10 @@ cursor = connection.cursor()
 def init_todo_db():
     """Function to initialize the to-do list database by creating and populating the table."""
     # Drop table if it exists
-    drop_table = 'DROP TABLE IF EXISTS todo_db.todos;'
+    drop_table = 'DROP TABLE IF EXISTS todolist_errick_db.todos;'
     # Create new table
     todos_table = """
-    CREATE TABLE todo_db.todos(
+    CREATE TABLE todolist_errick_db.todos(
     task_id INT NOT NULL AUTO_INCREMENT,
     title VARCHAR(100) NOT NULL,
     description VARCHAR(200),
@@ -34,7 +41,7 @@ def init_todo_db():
     """
     # Insert data into table
     data = """
-    INSERT INTO todo_db.todos (title, description, is_done)
+    INSERT INTO todolist_errick_db.todos (title, description, is_done)
     VALUES
         ("Learning docker", "Finishing all topics", 1 ),
         ("Ansible topics", "Just forgot. Need to revise again.", 0),
