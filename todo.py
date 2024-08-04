@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, abort, request, make_response
+from flask import Flask, jsonify, abort, request, make_response, send_from_directory
 from flaskext.mysql import MySQL
 from flask_cors import CORS
 from dotenv import load_dotenv
@@ -98,6 +98,10 @@ def remove_task(task):
 
 # Set up Flask routes for API
 @app.route('/')
+def index(): 
+    return send_from_directory('.', 'index.html')
+
+@app.route('/backend')
 def home():
     """Home route that returns a welcome message."""
     return "Welcome to to-do API Service"
